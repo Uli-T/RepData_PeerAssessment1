@@ -5,9 +5,7 @@ output:
     keep_md: true
 ---
 
-
 ## Loading and preprocessing the data
-
 First the working directory should be set to the directory this Rmd file is stored in (using `setwd()`). Next we load a required package (`dplyr`), unpack the compressed data and read it into memory (using `read.csv`). No preprocessing of data is necessary.
 
 ```{r echo=TRUE}
@@ -17,16 +15,13 @@ dataset <- read.csv("activity.csv", header=TRUE, sep=",")
 ```
 
 ## What is mean total number of steps taken per day?
-
 We calculate the total number of steps taken per day and plot a histogram:
-
 ```{r echo=TRUE}
 dailysteps <- tapply(dataset$steps, dataset$date, sum, na.rm = TRUE) 
 hist(dailysteps, main = "Total no. of steps per day", xlab = "Steps per day", ylab="No. of days")
 ```
 
 Next we calculate the mean and median of the total number of steps taken per day:
-
 ```{r echo=TRUE}
 round(mean(dailysteps))
 round(median(dailysteps))
@@ -48,7 +43,6 @@ The answer is interval 835 (= 08:35 am) has the maximum average number of steps 
 
 ## Imputing missing values
 First we calculate and report the total number of missing values (coded as NA) in the dataset, as well as their percentage:
-
 ```{r echo=TRUE}
 sum(!complete.cases(dataset$steps))
 dim(dataset)[1]
@@ -58,20 +52,17 @@ sum(!complete.cases(dataset$steps))/dim(dataset)[1]
 There are 2304 missing values in 17568 observations (13.1%), clearly too much to ignore, so we need to decide on the strategy how to impute the missing values. To keep things simple, for each NA we will use the mean for that particular 5-minute interval across all days.
 
 First we create a new dataset, equal to the original dataset but with the missing data filled in:
-
 ```{r echo=TRUE}
 new_dataset <- transform(dataset, steps = ifelse(is.na(steps), dailyactivity, steps))
 new_dailysteps <- tapply(new_dataset$steps, new_dataset$date, sum) 
 ```
 
 Then we produce a histogram of the total number of steps taken each day:
-
 ```{r echo=TRUE}
 hist(new_dailysteps, main = "Total no. of steps per day (imputed)", xlab = "Steps per day", ylab="No. of days")
 ```
 
 and calculate the mean and median total number of steps taken per day:
-
 ```{r echo=TRUE}
 mean(new_dailysteps)
 median(new_dailysteps)
@@ -97,7 +88,6 @@ workday_activity <- tapply(workday_data$steps, workday_data$interval, mean, na.r
 ```
 
 This data can then be plotted separately for workdays and weekends:
-
 ```{r echo=TRUE}
 par(mfrow = c(2,1), mar = c(4,4,2,1))
 plot(workday_activity ~ unique(new_dataset$interval), type="l", main="Workdays", xlab="5-min interval", ylab="Average no. of steps")
