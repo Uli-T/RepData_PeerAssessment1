@@ -29,7 +29,6 @@ round(median(dailysteps))
 
 ## What is the average daily activity pattern?
 We make a time series plot of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis):
-
 ```{r echo=TRUE}
 dailyactivity <- tapply(dataset$steps, dataset$interval, mean, na.rm = TRUE)
 plot(dailyactivity ~ unique(dataset$interval), type="l", xlab="5-min interval", ylab="Average no. of steps")
